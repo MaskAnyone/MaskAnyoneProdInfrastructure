@@ -42,9 +42,9 @@ To do so first start the database container.
 docker-compose up -d postgres
 ```
 Then wait for 10 seconds to give it some time to prepare the database. 
-Afterward, also start the keycloak container.
+Afterward, also start the other containers, except for the workers.
 ```bash
-docker-compose up -d proxy keycloak
+docker-compose up -d proxy frontend backend keycloak
 ```
 Then wait for another 30 seconds to give keycloak some time to complete its initial setup.
 Now try to access the keycloak admin UI at [https://localhost/auth/](https://localhost/auth/). 
@@ -71,7 +71,7 @@ Follow these steps to set up a new user:
 - Specify a "Username", "Email", "First name" and "Last name"; Also set "Email verified" to true
 - Click on "Create" to create this user
 - Open the "Credentials" tab and click on "Set password" to specify a password for this user
-- Specify the password and confirm it a second time; You can choose to leave temporary enabled which will force this user to change the password after the first login; Finally click on "Save"
+- Specify the password and confirm it a second time; You can choose to leave temporary enabled which will force this user to change the password after the first login; Finally click on "Save" and "Save password"
 
 **Step 8: Provide the backend with keycloak's public key.**
 To identify a user the keycloak server generates a so-called token which it signs so that other parts of the application (i.e. our backend) can check the user permissions.
@@ -80,7 +80,7 @@ In order to give it access to this public key, please do the following:
 - Open the keycloak admin UI, login and select the "maskanyone" realm (if you haven't already)
 - Click on "Realm settings" in the left sidebar
 - Open the "Keys" tab
-- Search for the line with algorithm "RSA256" and click on the "Public key" button of this row
+- Search for the line with algorithm "RS256" and click on the "Public key" button of this row
 - Copy the entire public key string shown in the dialog
 - Open the `.env` file and replace `<keycloak-rs256-public-key>` with this key
 
