@@ -17,7 +17,7 @@ services:
       POSTGRES_USER: ${MASK_ANYONE_DB_USER}
       POSTGRES_PASSWORD: ${MASK_ANYONE_DB_PASSWORD}
     volumes:
-      - data-postgres:/var/lib/postgresql/data
+      - ./data/postgres:/var/lib/postgresql/data
 
   keycloak:
     image: ghcr.io/maskanyone/maskanyone/keycloak:${MASK_ANYONE_VERSION}
@@ -59,7 +59,3 @@ services:
             - driver: nvidia
               count: 1
               capabilities: [gpu]
-
-volumes:
-  data-postgres:
-    driver: local
