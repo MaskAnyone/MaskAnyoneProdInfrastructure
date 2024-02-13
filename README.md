@@ -116,3 +116,11 @@ Afterward you can interact with the application using the following commands.
 - **View the logs of a specific container**: `docker-compose logs -f <container-name>`
 - **View the status of all containers**: `docker-compose ps`
 - **Reset the database**: `docker-compose down -v` (This will delete all data in the database and is irreversible)
+
+## Updating to a newer version of MaskAnyone
+In general, if you want to update to newer version of the application, you have to do the following:
+- Update the version in the `.env` file
+- Check if the version update requires any additional changes
+- Run `docker-compose pull && docker-compose build`
+- Stop the application `docker-compose down`
+- Start the application again `docker-compose up -d`

@@ -41,6 +41,8 @@ services:
       BACKEND_PG_PASSWORD: ${MASK_ANYONE_DB_PASSWORD}
       BACKEND_PG_DATABASE: prototype
       BACKEND_AUTH_PUBLIC_KEY: ${MASK_ANYONE_KC_PUBLIC_KEY}
+    volumes:
+      - ./data/backend:/var/lib/maskanyone/data
 
   worker-basic_masking:
     build:
