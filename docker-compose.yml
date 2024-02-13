@@ -40,6 +40,25 @@ services:
       BACKEND_PG_USER: ${MASK_ANYONE_DB_USER}
       BACKEND_PG_PASSWORD: ${MASK_ANYONE_DB_PASSWORD}
       BACKEND_PG_DATABASE: prototype
+      BACKEND_AUTH_PUBLIC_KEY: ${MASK_ANYONE_KC_PUBLIC_KEY}
+
+  worker-basic_masking:
+    build:
+      context: ./docker/worker
+    depends_on:
+      - backend
+    environment:
+      WORKER_TYPE: "basic_masking"
+    mem_limit: ${MASK_ANYONE_BASIC_MEM_LIMIT}
+    cpus: ${MASK_ANYONE_BASIC_CPUS}
+    scale: ${MASK_ANYONE_BASIC_WORKER_COUNT}
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
 
 volumes:
   data-postgres:
