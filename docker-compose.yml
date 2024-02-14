@@ -47,6 +47,8 @@ services:
   worker-basic_masking:
     build:
       context: ./docker/worker
+      args:
+        - MASK_ANYONE_VERSION=v0.1.20
     depends_on:
       - backend
     environment:

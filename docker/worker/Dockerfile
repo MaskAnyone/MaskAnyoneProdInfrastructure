@@ -1,6 +1,7 @@
 FROM nvidia/cuda:11.7.1-cudnn8-runtime-ubuntu22.04
 
 ARG DEBIAN_FRONTEND=noninteractive
+ARG MASK_ANYONE_VERSION
 
 WORKDIR /app
 
@@ -16,6 +17,8 @@ RUN apt-get update \
     gcc \
     git \
     ffmpeg \
+    wget \
+    unzip \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -53,8 +56,9 @@ RUN python3 /scripts/download_voice_models.py
 #    && sed -i 's/mp4v/vp09/' /STTN/test.py
 
 RUN cd / \
-    && git clone https://github.com/MaskAnyone/MaskAnyone.git \
-    && mv MaskAnyone/workers/* /app \
+    && wget https://github.com/MaskAnyone/MaskAnyone/archive/refs/tags/${MASK_ANYONE_VERSION}.zip \
+    && unzip ${MASK_ANYONE_VERSION}.zip -d MaskAnyone \
+    && mv MaskAnyone/MaskAnyone-${MASK_ANYONE_VERSION#?}/workers/* /app \
     && rm -rf MaskAnyone
 
 CMD ["python3", "/app/basic_masking_worker.py"]
