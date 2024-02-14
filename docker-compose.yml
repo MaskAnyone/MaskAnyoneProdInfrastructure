@@ -51,6 +51,7 @@ services:
       - backend
     environment:
       WORKER_TYPE: "basic_masking"
+      WORKER_BACKEND_BASE_PATH: ${MASK_ANYONE_WORKER_BACKEND_BASE_PATH}
     mem_limit: ${MASK_ANYONE_BASIC_MEM_LIMIT}
     cpus: ${MASK_ANYONE_BASIC_CPUS}
     scale: ${MASK_ANYONE_BASIC_WORKER_COUNT}
