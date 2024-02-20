@@ -57,6 +57,13 @@ services:
     mem_limit: ${MASK_ANYONE_BASIC_MEM_LIMIT}
     cpus: ${MASK_ANYONE_BASIC_CPUS}
     scale: ${MASK_ANYONE_BASIC_WORKER_COUNT}
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
 
   worker-roop:
     build:
@@ -68,3 +75,10 @@ services:
     environment:
       WORKER_TYPE: "roop"
       WORKER_BACKEND_BASE_PATH: ${MASK_ANYONE_WORKER_BACKEND_BASE_PATH}
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [ gpu ]
