@@ -46,14 +46,14 @@ RUN cd / \
 RUN python3 /scripts/download_voice_models.py
 
 # STTN
-#RUN cd / \
-#    && git clone https://github.com/researchmm/STTN.git \
-#    && cd STTN \
-#    && mkdir ./checkpoints \
-#    && cd ./checkpoints \
-#    && gdown https://drive.google.com/uc?id=1ZAMV8547wmZylKRt5qR_tC5VlosXD4Wv \
-#    && sed -i 's/cuda:1/cuda:0/' /STTN/test.py \
-#    && sed -i 's/mp4v/vp09/' /STTN/test.py
+RUN cd / \
+    && git clone https://github.com/researchmm/STTN.git \
+    && cd STTN \
+    && mkdir ./checkpoints \
+    && cd ./checkpoints \
+    && gdown https://drive.google.com/uc?id=1ZAMV8547wmZylKRt5qR_tC5VlosXD4Wv \
+    && sed -i 's/cuda:1/cuda:0/' /STTN/test.py \
+    && sed -i 's/mp4v/vp09/' /STTN/test.py
 
 RUN cd / \
     && wget https://github.com/MaskAnyone/MaskAnyone/archive/refs/tags/${MASK_ANYONE_VERSION}.zip \
