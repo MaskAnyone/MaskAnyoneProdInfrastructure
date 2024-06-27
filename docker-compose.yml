@@ -45,26 +45,13 @@ services:
       - ./data/backend:/var/lib/maskanyone/data
 
   worker-basic_masking:
-    build:
-      context: ./docker/worker
-      args:
-        - MASK_ANYONE_VERSION=v0.1.20
+    image: ghcr.io/maskanyone/maskanyone/worker:${MASK_ANYONE_VERSION}
     depends_on:
       - backend
+    restart: on-failure
     environment:
       WORKER_TYPE: "basic_masking"
       WORKER_BACKEND_BASE_PATH: ${MASK_ANYONE_WORKER_BACKEND_BASE_PATH}
     mem_limit: ${MASK_ANYONE_BASIC_MEM_LIMIT}
     cpus: ${MASK_ANYONE_BASIC_CPUS}
     scale: ${MASK_ANYONE_BASIC_WORKER_COUNT}
-
-  worker-roop:
-    build:
-      context: ./docker/roop-worker
-      args:
-        - MASK_ANYONE_VERSION=v0.1.20
-    depends_on:
-      - backend
-    environment:
-      WORKER_TYPE: "roop"
-      WORKER_BACKEND_BASE_PATH: ${MASK_ANYONE_WORKER_BACKEND_BASE_PATH}
