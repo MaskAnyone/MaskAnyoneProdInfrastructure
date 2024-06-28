@@ -6,6 +6,69 @@ Make sure you have installed [Docker](https://docs.docker.com/get-docker/) on yo
 Furthermore, please also ensure that you have sufficient hard drive space available for the setup.
 We recommend at least 50GB of free space.
 
+## Setup
+There are two different setup options. 
+
+If you want to run MaskAnyone locally on your computer, please use the "Setup (Local)" option.
+The functionality is generally the same, but you won't have a login and authentication service as you're the only person using it. 
+This reduces complexity and setup duration a bit.
+
+If you want to run MaskAnyone on a server where many different people can access it through the network, please use the "Setup (Main Server)" option.
+This version includes an authentication service that allows you to configure user accounts to manage user access and separate user data.
+
+## Setup (Local)
+
+**Step 1: Open a terminal on your computer.**
+This setup assumes that you're using a Linux(i.e. Debian)-based system. 
+However, generally speaking, Mask Anyone should also run on any other common operating system by following this setup.
+
+**Step 2: Pull this repository.**
+Run the following commands one by one to pull the repository.
+```bash
+git clone https://github.com/MaskAnyone/MaskAnyoneProdInfrastructure.git maskanyone
+cd maskanyone
+```
+
+**Step 3: Configure the environment variables.**
+Now we need to set up the environment variables. First run the following command:
+```bash
+cp .env.dist .env
+```
+Now open the newly created `.env` file (e.g. using `nano .env`) and do the following adjustments:
+- Replace `<your-strong-password-1>` with as password of your choice. This is the password used to access the database.
+- (Optional) Configure the number of workers you want as well as their available resources. This is very dependent on the hardware resources of your computer and can be flexibly adjusted later on.
+
+**Step 4: Pull the infrastructure.**
+Run the following command to pull all the images and prepare the application infrastructure:
+```bash
+docker-compose -f docker-compose-local.yml pull
+```
+
+**Step 5: Start the application for the first time.**
+To do so first start the database container.
+```bash
+docker-compose -f docker-compose-local.yml up -d postgres
+```
+Then wait for 10 seconds to give it some time to prepare the database. 
+Afterward, also start the other containers.
+```bash
+docker-compose -f docker-compose-local.yml up -d
+```
+
+> If you encounter an error like `Cannot start service proxy: driver failed programming external connectivity on endpoint mask-anyone-prod-test_proxy_1`, this likely means that another application is occupying the port 443. Stop this application and try again.
+
+**Step 6: Verify that MaskAnyone is running.**
+First check that all containers are up and running:
+```bash
+docker-compose -f docker-compose-local.yml ps
+```
+If you find that a container is not running, you can try to identify the issue by looking at its logs:
+```bash
+docker-compose -f docker-compose-local.yml logs -f <container-name>
+```
+If your containers are running, then please try accessing MaskAnyone at [https://localhost](https://localhost). 
+
+
 ## Setup (Main Server)
 
 **Step 1: Open a terminal on your server.**
@@ -30,21 +93,21 @@ Now open the newly created `.env` file (e.g. using `nano .env`) and do the follo
 - Replace `<your-strong-password-2>` with as password of your choice. This is the password used to access the Keycloak admin interface (i.e. user management). Ideally, this should be different from the previous password.
 - Configure the number of workers you want as well as their available resources. This is very dependent on the hardware resources of your server and can be flexibly adjusted later on.
 
-**Step 4: Pull/build the infrastructure.**
+**Step 4: Pull the infrastructure.**
 Run the following command to pull all the images and prepare the application infrastructure:
 ```bash
-docker-compose pull
+docker-compose -f docker-compose-server.yml pull
 ```
 
 **Step 5: Start the application for the first time.**
 To do so first start the database container.
 ```bash
-docker-compose up -d postgres
+docker-compose -f docker-compose-server.yml up -d postgres
 ```
 Then wait for 10 seconds to give it some time to prepare the database. 
 Afterward, also start the other containers, except for the workers.
 ```bash
-docker-compose up -d proxy frontend backend keycloak
+docker-compose -f docker-compose-server.yml up -d proxy frontend backend keycloak
 ```
 Then wait for another 30 seconds to give keycloak some time to complete its initial setup.
 Now try to access the keycloak admin UI at [https://localhost/auth/](https://localhost/auth/). 
@@ -88,17 +151,17 @@ In order to give it access to this public key, please do the following:
 
 **Step 8: Start the remaining containers.**
 ```bash
-docker-compose up -d
+docker-compose -f docker-compose-server.yml up -d
 ```
 
 **Step 9: Verify that MaskAnyone is running.**
 First check that all containers are up and running:
 ```bash
-docker-compose ps
+docker-compose -f docker-compose-server.yml ps
 ```
 If you find that a container is not running, you can try to identify the issue by looking at its logs:
 ```bash
-docker-compose logs -f <container-name>
+docker-compose -f docker-compose-server.yml logs -f <container-name>
 ```
 If your containers are running, then please try accessing MaskAnyone at [https://localhost](https://localhost). 
 Keep in mind that this URL points to localhost and will therefore only work if you try accessing it from within your server. 
@@ -108,7 +171,7 @@ Assuming that you're accessing your server via ssh, you should be able to access
 *Only applicable for server setups, not local setups.* \
 If you want to add additional worker servers to your setup, you can do so by following the steps below.
 
-[tbd]
+[tbd - not yet available]
 
 ## Interacting with the application after the initial setup
 The setup steps outlined above are only necessary for the initial setup of the application.
@@ -118,6 +181,9 @@ Afterward you can interact with the application using the following commands.
 - **View the logs of a specific container**: `docker-compose logs -f <container-name>`
 - **View the status of all containers**: `docker-compose ps`
 
+> Remember to add ` -f docker-compose-local.yml` or ` -f docker-compose-server.yml` depending on your initial setup.
+
+
 ## Updating to a newer version of MaskAnyone
 In general, if you want to update to newer version of the application, you have to do the following:
 - Update the version in the `.env` file
@@ -125,3 +191,6 @@ In general, if you want to update to newer version of the application, you have 
 - Run `docker-compose pull`
 - Stop the application `docker-compose down`
 - Start the application again `docker-compose up -d`
+
+> Remember to add ` -f docker-compose-local.yml` or ` -f docker-compose-server.yml` depending on your initial setup.
+
