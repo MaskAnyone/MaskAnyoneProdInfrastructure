@@ -33,7 +33,7 @@ Now open the newly created `.env` file (e.g. using `nano .env`) and do the follo
 **Step 4: Pull/build the infrastructure.**
 Run the following command to pull all the images and prepare the application infrastructure:
 ```bash
-docker-compose pull && docker-compose build
+docker-compose pull
 ```
 
 **Step 5: Start the application for the first time.**
@@ -50,6 +50,8 @@ Then wait for another 30 seconds to give keycloak some time to complete its init
 Now try to access the keycloak admin UI at [https://localhost/auth/](https://localhost/auth/). 
 Remember that localhost will only work if the browser runs on the same computer where you're doing the setup.
 If you're doing the setup on a server via SSH, then you can try accessing it using `https://<your-server-ip>/auth/`.
+
+> If you encounter an error like `Cannot start service proxy: driver failed programming external connectivity on endpoint mask-anyone-prod-test_proxy_1`, this likely means that another application is occupying the port 443. Stop this application and try again.
 
 **Step 6: Set up the keycloak realm.**
 A realm is essentially an organization within keycloak where all your users and configuration is located. 
@@ -120,6 +122,6 @@ Afterward you can interact with the application using the following commands.
 In general, if you want to update to newer version of the application, you have to do the following:
 - Update the version in the `.env` file
 - Check if the version update requires any additional changes
-- Run `docker-compose pull && docker-compose build`
+- Run `docker-compose pull`
 - Stop the application `docker-compose down`
 - Start the application again `docker-compose up -d`
