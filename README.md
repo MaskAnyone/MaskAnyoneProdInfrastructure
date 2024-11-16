@@ -41,18 +41,18 @@ Now open the newly created `.env` file (e.g. using `nano .env`) and do the follo
 **Step 4: Pull the infrastructure.**
 Run the following command to pull all the images and prepare the application infrastructure:
 ```bash
-docker-compose -f docker-compose-local.yml pull
+docker compose -f docker-compose-local.yml pull
 ```
 
 **Step 5: Start the application for the first time.**
 To do so first start the database container.
 ```bash
-docker-compose -f docker-compose-local.yml up -d postgres
+docker compose -f docker-compose-local.yml up -d postgres
 ```
 Then wait for 10 seconds to give it some time to prepare the database. 
 Afterward, also start the other containers.
 ```bash
-docker-compose -f docker-compose-local.yml up -d
+docker compose -f docker-compose-local.yml up -d
 ```
 
 > If you encounter an error like `Cannot start service proxy: driver failed programming external connectivity on endpoint mask-anyone-prod-test_proxy_1`, this likely means that another application is occupying the port 443. Stop this application and try again.
@@ -60,11 +60,11 @@ docker-compose -f docker-compose-local.yml up -d
 **Step 6: Verify that MaskAnyone is running.**
 First check that all containers are up and running:
 ```bash
-docker-compose -f docker-compose-local.yml ps
+docker compose -f docker-compose-local.yml ps
 ```
 If you find that a container is not running, you can try to identify the issue by looking at its logs:
 ```bash
-docker-compose -f docker-compose-local.yml logs -f <container-name>
+docker compose -f docker-compose-local.yml logs -f <container-name>
 ```
 If your containers are running, then please try accessing MaskAnyone at [https://localhost](https://localhost). 
 
@@ -96,18 +96,18 @@ Now open the newly created `.env` file (e.g. using `nano .env`) and do the follo
 **Step 4: Pull the infrastructure.**
 Run the following command to pull all the images and prepare the application infrastructure:
 ```bash
-docker-compose -f docker-compose-server.yml pull
+docker compose -f docker-compose-server.yml pull
 ```
 
 **Step 5: Start the application for the first time.**
 To do so first start the database container.
 ```bash
-docker-compose -f docker-compose-server.yml up -d postgres
+docker compose -f docker-compose-server.yml up -d postgres
 ```
 Then wait for 10 seconds to give it some time to prepare the database. 
 Afterward, also start the other containers, except for the workers.
 ```bash
-docker-compose -f docker-compose-server.yml up -d proxy frontend backend keycloak
+docker compose -f docker-compose-server.yml up -d proxy frontend backend keycloak
 ```
 Then wait for another 30 seconds to give keycloak some time to complete its initial setup.
 Now try to access the keycloak admin UI at [https://localhost/auth/](https://localhost/auth/). 
@@ -151,17 +151,17 @@ In order to give it access to this public key, please do the following:
 
 **Step 8: Start the remaining containers.**
 ```bash
-docker-compose -f docker-compose-server.yml up -d
+docker compose -f docker-compose-server.yml up -d
 ```
 
 **Step 9: Verify that MaskAnyone is running.**
 First check that all containers are up and running:
 ```bash
-docker-compose -f docker-compose-server.yml ps
+docker compose -f docker-compose-server.yml ps
 ```
 If you find that a container is not running, you can try to identify the issue by looking at its logs:
 ```bash
-docker-compose -f docker-compose-server.yml logs -f <container-name>
+docker compose -f docker-compose-server.yml logs -f <container-name>
 ```
 If your containers are running, then please try accessing MaskAnyone at [https://localhost](https://localhost). 
 Keep in mind that this URL points to localhost and will therefore only work if you try accessing it from within your server. 
@@ -176,10 +176,10 @@ If you want to add additional worker servers to your setup, you can do so by fol
 ## Interacting with the application after the initial setup
 The setup steps outlined above are only necessary for the initial setup of the application.
 Afterward you can interact with the application using the following commands.
-- **Start the application**: `docker-compose up -d`
-- **Stop the application**: `docker-compose down`
-- **View the logs of a specific container**: `docker-compose logs -f <container-name>`
-- **View the status of all containers**: `docker-compose ps`
+- **Start the application**: `docker compose up -d`
+- **Stop the application**: `docker compose down`
+- **View the logs of a specific container**: `docker compose logs -f <container-name>`
+- **View the status of all containers**: `docker compose ps`
 
 > Remember to add ` -f docker-compose-local.yml` or ` -f docker-compose-server.yml` depending on your initial setup.
 
@@ -188,9 +188,9 @@ Afterward you can interact with the application using the following commands.
 In general, if you want to update to newer version of the application, you have to do the following:
 - Update the version in the `.env` file
 - Check if the version update requires any additional changes
-- Run `docker-compose pull`
-- Stop the application `docker-compose down`
-- Start the application again `docker-compose up -d`
+- Run `docker compose pull`
+- Stop the application `docker compose down`
+- Start the application again `docker compose up -d`
 
 > Remember to add ` -f docker-compose-local.yml` or ` -f docker-compose-server.yml` depending on your initial setup.
 
