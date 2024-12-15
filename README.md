@@ -93,6 +93,8 @@ Now open the newly created `.env` file (e.g. using `nano .env`) and do the follo
 - Replace `<your-strong-password-2>` with as password of your choice. This is the password used to access the Keycloak admin interface (i.e. user management). Ideally, this should be different from the previous password.
 - Configure the number of workers you want as well as their available resources. This is very dependent on the hardware resources of your server and can be flexibly adjusted later on.
 
+> Please note: If you're setting up MaskAnyone on a server with the plan of accessing it from another computer, you may want to adjust some additional configurations. If you want to use a different port than the default https port (443), you can modify the `docker-compose-server.yml` and change the line `- "443:443"` in the `proxy` section to e.g., `- "1234:443"`. If you do that or plan on accessing MaskAnyone via the network (e.g., on `https://100.100.100.100:1234`), please also modify the `backend` section to specify an additional environment variable for the token issuer as follows: `BACKEND_AUtH_ISSUER=https://100.100.100.100:1234/auth/realms/maskanyone`.
+
 **Step 4: Pull the infrastructure.**
 Run the following command to pull all the images and prepare the application infrastructure:
 ```bash
@@ -148,6 +150,8 @@ In order to give it access to this public key, please do the following:
 - Search for the line with algorithm "RS256" and click on the "Public key" button of this row
 - Copy the entire public key string shown in the dialog
 - Open the `.env` file and replace `<keycloak-rs256-public-key>` with this key
+
+> If you plan on accessing MaskAnyone on any other domain than `https://localhost` (so either a different port or hostname or both), then you'll also need to configure the root URL and valid redirect URIs of the keycloak client. To do so, please select the "maskanyone" realm, click on "Clients" and then "maskanyone-fe". Now please change the "Root URL" to e.g., `https://100.100.100.100:1234` and the first entry of "Valid redirect URIs" to `https://100.100.100.100:1234/*`.
 
 **Step 8: Start the remaining containers.**
 ```bash
