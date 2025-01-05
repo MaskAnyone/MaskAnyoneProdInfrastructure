@@ -73,3 +73,21 @@ services:
       - /dev/nvidiactl:/dev/nvidiactl
       - /dev/nvidia-uvm:/dev/nvidia-uvm
       - /dev/nvidia-uvm-tools:/dev/nvidia-uvm-tools
+
+  openpose:
+    image: ghcr.io/maskanyone/maskanyone/openpose:0.2.22
+    restart: on-failure
+    environment:
+      OPENPOSE_MODEL_DIR: "/workspace/openpose/models"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [ gpu ]
+    devices:
+      - /dev/nvidia0:/dev/nvidia0
+      - /dev/nvidiactl:/dev/nvidiactl
+      - /dev/nvidia-uvm:/dev/nvidia-uvm
+      - /dev/nvidia-uvm-tools:/dev/nvidia-uvm-tools
