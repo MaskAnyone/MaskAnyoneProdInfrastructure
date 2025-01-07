@@ -70,6 +70,7 @@ If your containers are running, then please try accessing MaskAnyone at [https:/
 
 
 ## Setup (Main Server)
+> If you want to run the latest version based on SAM2, replace `docker-compose-server.yml` with `docker-compose-server-gpu.yml` in all following commands. Please note that this version requires a modern and powerful Nvidia GPU.
 
 **Step 1: Open a terminal on your server.**
 This can, for example, be done via ssh. Make sure you have the necessary permissions to execute the following commands.
