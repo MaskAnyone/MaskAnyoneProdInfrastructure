@@ -5,9 +5,10 @@ services:
     image: ghcr.io/maskanyone/maskanyone/cli:${MASK_ANYONE_VERSION}
     depends_on:
       - sam2
-    restart: on-failure
     environment:
       WORKER_LOCAL_DATA_DIR: "/worker_data"
+    volumes:
+      - .:/data
 
   sam2:
     image: ghcr.io/maskanyone/maskanyone/sam2:${MASK_ANYONE_VERSION}
