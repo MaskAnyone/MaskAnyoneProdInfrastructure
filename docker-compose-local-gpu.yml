@@ -50,6 +50,8 @@ services:
   sam2:
     image: ghcr.io/maskanyone/maskanyone/sam2:${MASK_ANYONE_VERSION}
     restart: on-failure
+    environment:
+      SAM2_OFFLOAD_STATE_TO_CPU: ${MASK_ANYONE_SAM2_OFFLOAD_TO_CPU}
     deploy:
       resources:
         reservations:
