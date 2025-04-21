@@ -16,6 +16,11 @@ This reduces complexity and setup duration a bit.
 If you want to run MaskAnyone on a server where many different people can access it through the network, please use the "Setup (Main Server)" option.
 This version includes an authentication service that allows you to configure user accounts to manage user access and separate user data.
 
+> Please note the different docker-compose-<..>.yml files
+> - `docker-compose-local.yml` and `docker-compose-server.yml` come without any GPU-support, thus not including SAM2 and OpenPose (MediaPipe-based masking only).
+> - `docker-compose-local-gpu.yml` and `docker-compose-server-gpu.yml` include SAM2 and OpenPose (SAM2+MediaPipe/OpenPose-based masking).
+> - `docker-compose-cli.yml` contains a setup with GPU-support to automatically process a folder of videos without human intervention 
+
 ## Setup (Local)
 
 **Step 1: Open a terminal on your computer.**
